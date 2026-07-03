@@ -58,7 +58,7 @@ application:
 
 services:
   zocr:
-    image: registry.lazycat.cloud/fghwett/helloz/zocr:71114e6b8ddbcfb5 # helloz/zocr:0.3.0
+    image: embed:zocr
     environment: # map[string]string | []string 对应容器的环境变量
       ZOCR_TOKEN: {{ index .UserParams "zocr.token" }}
       ZOCR_WORKERS: {{ index .UserParams "zocr.workers" }}

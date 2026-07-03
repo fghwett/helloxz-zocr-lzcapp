@@ -8,6 +8,11 @@ pkgout: ./dist/
 
 icon: ./zocr.png
 
+images:
+  zocr:
+    dockerfile: ./Dockerfile
+    upstream-match: registry.lazycat.cloud
+
 resource_exports:
   - kind: skills
     source: ./resources/skills/
