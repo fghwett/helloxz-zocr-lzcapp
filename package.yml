@@ -1,0 +1,25 @@
+# 必须参数
+package: com.aweoo.lazycat.helloxz.zocr
+version: 0.0.1
+
+name: ZOCR
+description: 基于百度PP-OCRv6模型的在线OCR识别API服务。支持懒猫网盘文件右键菜单打开、MCP、SKILL。
+author: fghwett
+license: https://choosealicense.com/licenses/agpl-3.0/
+homepage: https://github.com/fghwett/helloxz-zocr-lzcapp/issues
+admin_only: false
+hidden_from_launcher: false
+min_os_version: 1.6.0
+unsupported_platforms:
+  - tvos
+
+permissions:
+
+locales:
+  en-US:
+    name: ZOCR
+    description: Online OCR recognition API service based on Baidu PP-OCRv6 model. Support opening the right-click menu of files in Lazycat NetDisk, MCP, and SKILL.
+    usage: |
+      The original project address: https://github.com/helloxz/zocr
+      LPK maintain address: https://github.com/fghwett/helloxz-zocr-lzcapp
+      Thank you for open source. If you have any issues, you can provide feedback in the app store or at the LPK maintenance address. If you have more functional requirements, you can kindly ask questions at the original project address.

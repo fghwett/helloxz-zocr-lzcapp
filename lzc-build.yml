@@ -1,0 +1,16 @@
+buildscript: task build
+
+manifest: ./lzc-manifest.yml
+
+contentdir: ./content/
+
+pkgout: ./dist/
+
+icon: ./zocr.png
+
+resource_exports:
+  - kind: skills
+    source: ./resources/skills/
+  - kind: mcp-providers
+    source: ./resources/mcp-providers/
+

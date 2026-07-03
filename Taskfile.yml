@@ -1,0 +1,39 @@
+version: 3
+
+tasks:
+  deploy:
+    desc: 部署应用
+    cmds:
+      - lzc-cli project deploy
+
+  info:
+    desc: 查看应用信息
+    cmds:
+      - lzc-cli project info
+
+  exec:
+    desc: 进入应用容器
+    cmds:
+      - lzc-cli project exec -s zocr -- /bin/bash
+
+  build:
+    desc: 构建mcp-server
+    dir: src/mcp-server/
+    cmds:
+      - mkdir -p ../../content/mcp-server/
+      - GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ../../content/mcp-server/mcp-server
+
+  lint:
+    desc: 项目检查
+    cmds:
+      - lzc-cli project lint .
+
+  copy-image:
+    desc: 拷贝镜像
+    cmds:
+      - lzc-cli appstore copy-image helloz/zocr:0.3.0
+
+  release:
+    desc: 打包appstore版本
+    cmds:
+      - lzc-cli project release

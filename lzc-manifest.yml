@@ -1,0 +1,78 @@
+# 应用的使用须知，如果不为空，则微服内每个用户第一次访问本应用时会自动渲染。
+usage: |
+  原项目地址：https://github.com/helloxz/zocr
+  LPK维护地址：https://github.com/fghwett/helloxz-zocr-lzcapp
+  感谢开源，有问题可以在应用市场或LPK维护地址进行反馈。如果有更多功能需求，可以在原项目地址友好提问。
+
+application:
+  subdomain: helloxz-zocr
+  multi_instance: true
+
+  file_handler:
+    mime:
+      - image/jpeg
+      - image/png
+      - image/bmp
+      - image/webp
+    actions:
+      open: /?filename=/%u
+
+  routes:
+    - /=http://zocr:5080/
+  upstreams:
+    - location: /mcp
+      disable_trim_location: true
+      backend: http://127.0.0.1:8080 
+      use_backend_host: false
+      backend_launch_command: ZOCR_API_URL=http://zocr:5080 ZOCR_TOKEN={{ index .UserParams "zocr.token" }} /lzcapp/pkg/content/mcp-server/mcp-server 
+    - location: /ocr/upload
+      disable_trim_location: true
+      backend: http://127.0.0.1:8080
+      use_backend_host: false
+  public_path:
+    - /
+  injects:
+    - id: open-save-chooser
+      on: browser
+      when:
+        - /
+      do:
+        - src: file:///lzcapp/pkg/content/lazycat-injects/lzc-file-chooser-inject.js
+    - id: auto-fill-zocr-token
+      on: browser
+      when:
+        - /
+      do:
+        - src: builtin://simple-inject-password
+          params:
+            password: {{ index .UserParams "zocr.token" }}
+            allowPasswordOnly: true
+            autoSubmit: false
+            passwordSelector: "#token"
+    - id: auto-select-file-and-submit
+      on: browser          # 在真实浏览器环境执行，操作页面DOM
+      when:
+        - /?filename   # 匹配根路径，且URL带filename查询参数（值任意）
+      do: 
+        - src: file:///lzcapp/pkg/content/lazycat-injects/auto-select-file-and-submit-inject.js
+
+services:
+  zocr:
+    image: registry.lazycat.cloud/fghwett/helloz/zocr:71114e6b8ddbcfb5 # helloz/zocr:0.3.0
+    environment: # map[string]string | []string 对应容器的环境变量
+      ZOCR_TOKEN: {{ index .UserParams "zocr.token" }}
+      ZOCR_WORKERS: {{ index .UserParams "zocr.workers" }}
+      ZOCR_MODEL_VERSION: {{ index .UserParams "zocr.model_version" }}
+      ZOCR_MAX_FILE_SIZE: {{ index .UserParams "zocr.max_file_size" }}
+    healthcheck:
+      test:
+        - CMD 
+        - python3 
+        - -c 
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5080/api/health', timeout=5)"
+      timeout: 1s
+      interval: 60m
+      retries: 3
+      start_period: 3s
+      start_interval: 1s
+      disable: false

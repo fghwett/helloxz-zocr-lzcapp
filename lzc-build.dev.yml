@@ -1,0 +1,4 @@
+
+package_override:
+  package: com.aweoo.lazycat.test.helloxz.zocr
+
