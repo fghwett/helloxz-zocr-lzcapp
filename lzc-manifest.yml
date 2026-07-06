@@ -70,8 +70,8 @@ services:
         - python3 
         - -c 
         - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5080/api/health', timeout=5)"
-      timeout: 1s
-      interval: 60m
+      timeout: 10s
+      interval: 10s
       retries: 3
       start_period: 3s
       start_interval: 1s
